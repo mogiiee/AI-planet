@@ -27,3 +27,7 @@ async def verify_credentials(username: str, password: str) -> bool:
     hashed_password = user["password"].encode("utf-8")
     is_valid_password = bcrypt.checkpw(password.encode("utf-8"), hashed_password)
     return is_valid_password
+
+async def inserter(metadata: dict):
+    database.user_collection.insert_one(metadata)
+    return responses.response(True, "inserted successfully", metadata)
