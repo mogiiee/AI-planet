@@ -6,6 +6,7 @@ class User(BaseModel):
     name:str
     email: str
     password: str
+    user_attributes:list
 
 class Hackathon(BaseModel):
     title: str

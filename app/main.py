@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from . import responses, database, ops, models
+import copy
 
 
 
@@ -14,8 +15,8 @@ async def get_all_hacks():
     return "all hacks"
 
 @app.post("/login", tags=["auth"])
-async def login(login_details: models.User):
-    infoDict = await login_details.json()
+async def login(login_details: models.UserLoginSchema):
+    infoDict =jsonable_encoder(login_details) 
     print(infoDict)
     email = infoDict['email']
     password = infoDict['password']
@@ -27,7 +28,7 @@ async def login(login_details: models.User):
 
 @app.post("/signup", tags=["auth"])
 async def signup(signup_details: models.User):
-    infoDict = await signup_details.json()
+    infoDict = jsonable_encoder(signup_details) 
     print(infoDict)
     infoDict = dict(infoDict)
     # Checking if email already exists
@@ -37,7 +38,7 @@ async def signup(signup_details: models.User):
     if email_count > 0:
         return responses.response(False, "duplicated user, email already in use", None)
     # Insert new user
-    
+
     encoded_password = ops.hash_password(str(infoDict["password"]))
     infoDict['password'] = encoded_password
     print(infoDict)
@@ -47,16 +48,16 @@ async def signup(signup_details: models.User):
         infoDict
     )
 
-@app.post("/creator/add_job", tags=["creator"])
-async def add_job(job_deets: Request):
-    infoDict = await job_deets.json()
+@app.post("/user/add_hack", tags=["add hack"])
+async def add_hack(hack_deets: models.Hackathon):
+    infoDict = jsonable_encoder(hack_deets)
     json_job_deets = dict(infoDict)
     email = infoDict['email']
-    full_profile = await ops.find_user_email(email)
+    full_profile = await ops.full_user_data(email)
     creator_user_attributes = full_profile["creator_attributes_jobs"]
     original_attributes = copy.deepcopy(full_profile["creator_attributes_jobs"])
     creator_user_attributes.append(json_job_deets)
     print(creator_user_attributes)
     ops.creator_attributes_jobs_updater(infoDict["email"],creator_user_attributes)
-    ops.job_inserter(json_job_deets)
+    ops.hack_inserter(json_job_deets)
     return responses.response(True, "job posted!", infoDict)

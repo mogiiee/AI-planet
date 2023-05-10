@@ -1,5 +1,4 @@
 from . import database
-from bson import ObjectId
 from . import database, responses
 import bcrypt
 
@@ -21,7 +20,7 @@ def hash_password(password: str) -> str:
 
 
 async def verify_credentials(username: str, password: str) -> bool:
-    user = await email_finder(username)
+    user = await full_user_data(username)
     if user is None:
         return False
     hashed_password = user["password"].encode("utf-8")
@@ -31,3 +30,10 @@ async def verify_credentials(username: str, password: str) -> bool:
 async def inserter(metadata: dict):
     database.user_collection.insert_one(metadata)
     return responses.response(True, "inserted successfully", metadata)
+
+
+async def full_user_data(email):
+    user = database.user_collection.find_one({"email": email})
+    if not user:
+        return responses.response(False, "does not exist", email)
+    return user
