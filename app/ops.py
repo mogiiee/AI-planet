@@ -37,3 +37,7 @@ async def full_user_data(email):
     if not user:
         return responses.response(False, "does not exist", email)
     return user
+
+def get_all_data():
+    response =database.user_collection.find({})
+    return list(response)

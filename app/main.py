@@ -1,7 +1,10 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.encoders import jsonable_encoder
 from . import responses, database, ops, models
 import copy
+from app.auth.jwt_bearer import JWTBearer
+from app.auth.jwt_handler import signJWT
+
 
 
 
@@ -48,16 +51,24 @@ async def signup(signup_details: models.User):
         infoDict
     )
 
-@app.post("/user/add_hack", tags=["add hack"])
+@app.post("/user/add_hack", dependencies=[Depends(JWTBearer())],tags=["add hack"])
 async def add_hack(hack_deets: models.Hackathon):
     infoDict = jsonable_encoder(hack_deets)
-    json_job_deets = dict(infoDict)
+    json_hack_deets = dict(infoDict)
     email = infoDict['email']
     full_profile = await ops.full_user_data(email)
     creator_user_attributes = full_profile["creator_attributes_jobs"]
     original_attributes = copy.deepcopy(full_profile["creator_attributes_jobs"])
-    creator_user_attributes.append(json_job_deets)
+    creator_user_attributes.append(json_hack_deets)
     print(creator_user_attributes)
     ops.creator_attributes_jobs_updater(infoDict["email"],creator_user_attributes)
-    ops.hack_inserter(json_job_deets)
+    ops.hack_inserter(json_hack_deets)
     return responses.response(True, "job posted!", infoDict)
+
+@app.get("/all-users")
+async def Get_all_data():
+    try:
+        response = ops.get_all_data()
+        return responses.response(True, None, str(response))
+    except Exception as e:
+        return responses.response(False, str(e),"something went wrong please try again")
