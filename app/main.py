@@ -4,23 +4,34 @@ from . import responses, database, ops, models,exporter
 import copy
 from app.auth.jwt_bearer import JWTBearer
 from app.auth.jwt_handler import signJWT
+import pyrebase
+from firebase_admin import credentials, storage
+import firebase_admin
 
-firebaseConfig = {
-  "apiKey": exporter.firebaseApiKey,
-  "authDomain": "ai-planet.firebaseapp.com",
-  "projectId": "ai-planet",
-  "storageBucket": "ai-planet.appspot.com",
-  "messagingSenderId": "53765739711",
-  "appId": exporter.firebaseAppID,
-  "measurementId": "G-KZXF5H2WN7",
-  "databaseURL":"https://ai-planet-default-rtdb.firebaseio.com/"
-}
 
 
 app = FastAPI()
+
+firebase = pyrebase.initialize_app(database.firebaseConfig)
+storage = firebase.storage()
+storage.child
+cred = credentials.Certificate("ai-planet-firebase-adminsdk-g7a8x-99521f9210.json")
+
+firebase_admin.initialize_app(
+    cred, {"storageBucket": "gs://ai-planet.appspot.com"}
+)
+
+
 @app.get("/")
 async def greet():
-    return {"hello": "world"}
+    return {"hello": "people from AI planet"}
+
+@app.get("/GetAllHacks")
+async def Get_all_hacks():
+    metadata = ops.get_all_hacks()
+    for x in metadata:
+        del x["_id"]
+    return responses.response(True,None, metadata)
 
 
 @app.post("/login", tags=["auth"])
@@ -56,11 +67,21 @@ async def signup(signup_details: models.User):
     return responses.response(True, "inserted",signJWT(infoDict)
     )
 
-@app.post("/user/add_hack", dependencies=[Depends(JWTBearer())],tags=["add hack"])
+@app.post("/user/add_hack", dependencies=[Depends(JWTBearer())],tags=["hack"])
 async def add_hack(hack_deets: models.Hackathon):
     infoDict = jsonable_encoder(hack_deets)
     json_hack_deets = dict(infoDict)
     email = infoDict['email']
+    hack_name = json_hack_deets["title"]
+    # print(hack_name)
+    all_hacks = ops.get_all_hacks()
+    # print(all_hacks)
+    for x in all_hacks:
+        print(x["title"])
+        if hack_name == x["title"]:
+            return responses.response(False, "hack already exists try a different name", hack_name )
+        else:
+            continue
     if ops.email_finder(email):
         full_profile = await ops.full_user_data(email)
         user_hacks_created = full_profile["hacks_created"]
@@ -83,13 +104,6 @@ async def Get_all_data():
     except Exception as e:
         return responses.response(False, str(e),"something went wrong please try again")
 
-@app.get("/GetAllHacks")
-async def Get_all_hacks():
-    metadata = ops.get_all_hacks()
-    for x in metadata:
-        del x["_id"]
-    return responses.response(True,None, metadata)
-
 
 @app.get("/specific-user", tags=["helpers"])
 async def full_user_data(email):
@@ -97,3 +111,27 @@ async def full_user_data(email):
     if not user:
         return responses.response(False, "does not exist", str(email))
     return str(user)
+
+@app.post("/user/register_hack", dependencies=[Depends(JWTBearer())],tags=["hack"])
+async def register_for_hack(registeration_deets: models.RegisterForHack):
+    infoDict = jsonable_encoder(registeration_deets)
+    json_hack_deets = dict(infoDict)
+    email = infoDict['email']
+    hack_name = infoDict["hack_name"]
+    print(hack_name)
+    all_hacks = ops.get_all_hacks()
+    # print(all_hacks)
+    # for x in all_hacks:
+    #     print(x)
+    #     if hack_name in x["title"]:
+    if ops.email_finder(email):
+        full_profile = await ops.full_user_data(email)
+        user_hacks_resgistered = full_profile["hacks_enlisted"]
+        # original_attributes = copy.deepcopy(full_profile["creator_attributes_jobs"])
+        user_hacks_resgistered.append(json_hack_deets)
+        ops.user_hack_enlisted_updater(infoDict["email"],user_hacks_resgistered )
+        return responses.response(True, "hack enlisted!", infoDict)
+    else:
+        return responses.response(False, "email does not exist", email)
+        # else:
+        #     return responses.response(False, "hack does not exist, try a different name", hack_name )

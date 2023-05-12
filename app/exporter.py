@@ -12,4 +12,4 @@ hackathon_collection = os.environ.get("HACKATHON_COLLECTION")
 ###COLECTIONS
 firebaseApiKey = os.environ.get("apikey")
 firebaseAppID = os.environ.get("appId")
-
+databaseURL = os.environ.get("databaseURL")

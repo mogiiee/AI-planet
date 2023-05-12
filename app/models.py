@@ -24,3 +24,7 @@ class Hackathon(BaseModel):
 class UserLoginSchema(BaseModel):
     email: EmailStr
     password: str
+
+class RegisterForHack(BaseModel):
+    email: EmailStr
+    hack_name: str
