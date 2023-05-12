@@ -22,9 +22,6 @@ app = FastAPI()
 async def greet():
     return {"hello": "world"}
 
-@app.get('/GetAll')
-async def get_all_hacks():
-    return "all hacks"
 
 @app.post("/login", tags=["auth"])
 async def login(login_details: models.UserLoginSchema):
@@ -69,7 +66,6 @@ async def add_hack(hack_deets: models.Hackathon):
         user_hacks_created = full_profile["hacks_created"]
         # original_attributes = copy.deepcopy(full_profile["creator_attributes_jobs"])
         user_hacks_created.append(json_hack_deets)
-        print(user_hacks_created )
         ops.user_hack_created_updater(infoDict["email"],user_hacks_created )
         ops.hack_inserter(json_hack_deets)
         return responses.response(True, "hack posted!", infoDict)
@@ -81,9 +77,18 @@ async def add_hack(hack_deets: models.Hackathon):
 async def Get_all_data():
     try:
         response = ops.get_all_data()
-        return responses.response(True, None, str(response))
+        for x in response:
+            del x["_id"]
+        return responses.response(True, None, response)
     except Exception as e:
         return responses.response(False, str(e),"something went wrong please try again")
+
+@app.get("/GetAllHacks")
+async def Get_all_hacks():
+    metadata = ops.get_all_hacks()
+    for x in metadata:
+        del x["_id"]
+    return responses.response(True,None, metadata)
 
 
 @app.get("/specific-user", tags=["helpers"])
