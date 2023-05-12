@@ -7,3 +7,5 @@ cluster = pymongo.MongoClient(exporter.realcluster)
 db = cluster[exporter.db_name]
 
 user_collection = db[exporter.collection]
+
+hackathon_collection = db[exporter.hackathon_collection]

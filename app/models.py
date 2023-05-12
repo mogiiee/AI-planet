@@ -6,13 +6,14 @@ class User(BaseModel):
     name:str
     email: str
     password: str
-    hacks_created:list
-    hacks_enlisted : list
+    hacks_created= []
+    hacks_enlisted =[]
 
 
 class Hackathon(BaseModel):
     title: str
     description: str
+    email: EmailStr
     background_image: bytes
     hackathon_image: bytes
     submission_type: constr(regex="^(image|file|link)$")
