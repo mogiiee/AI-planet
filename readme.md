@@ -70,7 +70,7 @@ Or you could simply run
 in order to not go though all the hassle of going through the steps of running locally. Remember to go
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file. I have included a .env.sample file already in the projet where you will see the variables needed to go throuh with the process.
+To run this project, you will need to add the following environment variables to your .env file. I have included a .env.sample file already in the project where you will see the variables needed to go throuh with the process.
 
 `CLUSTER`=
 
@@ -100,7 +100,7 @@ To run this project, you will need to add the following environment variables to
 finding and getting these env variables is definitely a pain specially for a person who learnt firebase from scratch for this project. I'd reccomend to go though [this video](https://www.youtube.com/watch?v=YOAeBSCkArA&t=129s) before getting started.
 ## Deployment
 
-If you dont want to go though getting all the environment variables ready, you could always see the deployed project on RENDER (RIP HEROKU😭🫡)
+If you dont want to go through getting all the environment variables ready, you could always see the deployed project on RENDER (RIP HEROKU😭🫡)
 
 ```bash
   https://ai-planet.onrender.com/docs
