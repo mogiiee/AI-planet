@@ -8,6 +8,7 @@ class User(BaseModel):
     password: str
     hacks_created= []
     hacks_enlisted =[]
+    submissions = []
 
 
 class Hackathon(BaseModel):
@@ -28,3 +29,10 @@ class UserLoginSchema(BaseModel):
 class RegisterForHack(BaseModel):
     email: EmailStr
     hack_name: str
+
+class Submissions(BaseModel):
+    name:str
+    which_hack: str
+    submission_url:str
+    summary: str
+    email:EmailStr

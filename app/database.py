@@ -10,6 +10,8 @@ user_collection = db[exporter.collection]
 
 hackathon_collection = db[exporter.hackathon_collection]
 
+submission_collection = db[exporter.submission_collection]
+
 firebaseConfig = {
   "apiKey": exporter.firebaseApiKey,
   "authDomain": "ai-planet.firebaseapp.com",
@@ -19,6 +21,6 @@ firebaseConfig = {
   "appId": exporter.firebaseAppID,
   "measurementId": "G-KZXF5H2WN7",
   "databaseURL":"https://ai-planet-default-rtdb.firebaseio.com/",
-  "serviceAccount":"ai-planet-firebase-adminsdk-g7a8x-99521f9210.json",
+  "serviceAccount":"ai-planet-firebase-adminsdk-g7a8x-65b9193f00.json",
   "databaseURL": exporter.databaseURL
 }

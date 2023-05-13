@@ -51,6 +51,10 @@ def user_hack_created_updater(WrongValue,CorrectValue):
         {"email": WrongValue}, {"$set": {"hacks_created": CorrectValue}}, upsert=True
     )
 
+def user_submissions_updater(WrongValue,CorrectValue):
+    database.user_collection.update_one(
+        {"email": WrongValue}, {"$set": {"submissions": CorrectValue}}, upsert=True
+    )
 
 def user_hack_enlisted_updater(WrongValue,CorrectValue):
     database.user_collection.update_one(
@@ -60,3 +64,15 @@ def user_hack_enlisted_updater(WrongValue,CorrectValue):
 def hack_inserter(metadata: dict):
     database.hackathon_collection.insert_one(metadata)
     return responses.response(True, "inserted successfully", metadata)
+
+def submission_inserter(metadata: dict):
+    database.submission_collection.insert_one(metadata)
+    return responses.response(True, "inserted successfully", metadata)
+
+def hack_verifier(title):
+    existing_hack = database.user_collection.find_one({"title": title})
+    if existing_hack is not None:
+        return False
+    else:
+        return True
+
