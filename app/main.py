@@ -103,7 +103,6 @@ async def add_hack(
     blob_background_image.upload_from_string(file_content2)
     blob_background_image.make_public()
     if ops.hack_verifier(hack_name):
-        print("ihkuhdfisjdfsdfdsf")
         if ops.email_finder(email):
             full_profile = await ops.full_user_data(email)
 
@@ -203,8 +202,7 @@ async def register_for_hack(registeration_deets: models.RegisterForHack):
     json_hack_deets = dict(infoDict)
     email = infoDict["email"]
     hack_name = infoDict["hack_name"]
-    print(hack_name)
-    if ops.hack_verifier:
+    if not ops.hack_verifier(hack_name):
         if ops.email_finder(email):
             full_profile = await ops.full_user_data(email)
             user_hacks_resgistered = full_profile["hacks_enlisted"]
