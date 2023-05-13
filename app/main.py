@@ -78,7 +78,7 @@ schema = {
     "submission_type": "link",
     "start_datetime": "2023-05-13T05:25:18.995Z",
     "end_datetime": "2023-05-13T05:25:18.995Z",
-    "reward_prize":"0"
+    "reward_prize": "0",
 }
 
 
@@ -133,7 +133,7 @@ schema = {
     "submission_type": "link",
     "start_datetime": "2023-05-13T05:25:18.995Z",
     "end_datetime": "2023-05-13T05:25:18.995Z",
-    "reward_prize": "0"
+    "reward_prize": "0",
 }
 
 # https://nscsso.my.site.com/student/s/article/Why-am-I-getting-the-error-message-Failed-to-Load-PDF-document-when-I-try-to-view-my-ePDF-transcript#:~:text=The%20%E2%80%9CFailed%20to%20Load%20PDF,opened%20with%20Adobe%20Acrobat%20Reader.
