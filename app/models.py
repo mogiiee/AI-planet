@@ -1,13 +1,13 @@
-from pydantic import BaseModel,constr, EmailStr
+from pydantic import BaseModel, constr, EmailStr
 from datetime import datetime
 
 
 class User(BaseModel):
-    name:str
+    name: str
     email: str
     password: str
-    hacks_created= []
-    hacks_enlisted =[]
+    hacks_created = []
+    hacks_enlisted = []
     submissions = []
 
 
@@ -22,18 +22,21 @@ class Hackathon(BaseModel):
     end_datetime: datetime
     reward_prize: float
 
+
 class UserLoginSchema(BaseModel):
     email: EmailStr
     password: str
+
 
 class RegisterForHack(BaseModel):
     email: EmailStr
     hack_name: str
 
+
 class Submissions(BaseModel):
-    name:str
+    name: str
     which_hack: str
-    submission_url:str
+    submission_url: str
     summary: str
-    email:EmailStr
+    email: EmailStr
     submission_type: constr(regex="^(link|picture|file)$")
