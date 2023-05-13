@@ -158,7 +158,6 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
         url = blob.public_url
         full_profile = await ops.full_user_data(email)
         user_submissions = full_profile["submissions"]
-        
 
         url_dict = {
             "submission link": url,
@@ -167,12 +166,16 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
             "which_hack": hack_name,
             "type of submission": type_of_submission,
         }
-        
+
         full_hack_data = ops.single_hack_data(hack_name)
         if full_hack_data["submission_type"] != type_of_submission:
-            return responses.response(False, 
-            "type of submission is not right please give "+ full_hack_data['submission_type']+ "type submission",
-             "your submission is of the type" + type_of_submission)
+            return responses.response(
+                False,
+                "type of submission is not right please give "
+                + full_hack_data["submission_type"]
+                + "type submission",
+                "your submission is of the type" + type_of_submission,
+            )
 
         user_submissions.append(url_dict)
 
@@ -234,4 +237,3 @@ async def full_user_data(email):
     if not user:
         return responses.response(False, "does not exist", str(email))
     return str(user)
-

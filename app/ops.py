@@ -42,6 +42,7 @@ async def full_user_data(email):
         return responses.response(False, "does not exist", email)
     return user
 
+
 def single_hack_data(title):
     hack = database.hackathon_collection.find_one({"title": title})
     if not hack:

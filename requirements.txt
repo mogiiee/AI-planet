@@ -42,7 +42,7 @@ pymongo==4.3.3
 pyparsing==3.0.9
 Pyrebase4==4.6.0
 python-decouple==3.8
-python-dotenv==1.0.0
+python-dotenv
 python-jwt==2.0.1
 python-multipart==0.0.6
 requests==2.30.0
