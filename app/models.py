@@ -15,8 +15,8 @@ class Hackathon(BaseModel):
     title: str
     description: str
     email: EmailStr
-    background_image: bytes
-    hackathon_image: bytes
+    background_image: str
+    hackathon_image: str
     submission_type: constr(regex="^(image|file|link)$")
     start_datetime: datetime
     end_datetime: datetime
@@ -36,3 +36,4 @@ class Submissions(BaseModel):
     submission_url:str
     summary: str
     email:EmailStr
+    submission_type: constr(regex="^(link|picture|file)$")
