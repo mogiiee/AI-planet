@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+    
+  fastapi:
+    build: .
+    ports:
+      - "8000:8000"
+    networks:
+      - app-tier
+    command: >
+      /bin/bash -c "
+      uvicorn app.main:app --host 0.0.0.0;
+      "
+networks:
+  app-tier:
+    driver: bridge

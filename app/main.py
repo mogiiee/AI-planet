@@ -69,17 +69,17 @@ async def signup(signup_details: models.User):
 
 
 # protected routes of adding a new hack
-# schema = {
-#     "title": "hi hack",
-#     "description": "string",
-#     "email": "user@example.com",
-#     "background_image": "string",
-#     "hackathon_image": "string",
-#     "submission_type": "link",
-#     "start_datetime": "2023-05-13T05:25:18.995Z",
-#     "end_datetime": "2023-05-13T05:25:18.995Z",
-#     "reward_prize": 0,
-# }
+schema = {
+    "title": "hi hack",
+    "description": "string",
+    "email": "user@example.com",
+    "background_image": "string",
+    "hackathon_image": "string",
+    "submission_type": "link",
+    "start_datetime": "2023-05-13T05:25:18.995Z",
+    "end_datetime": "2023-05-13T05:25:18.995Z",
+    "reward_prize":"0"
+}
 
 
 @app.post(
@@ -134,7 +134,7 @@ schema = {
     "submission_type": "link",
     "start_datetime": "2023-05-13T05:25:18.995Z",
     "end_datetime": "2023-05-13T05:25:18.995Z",
-    "reward_prize": 0,
+    "reward_prize": "0"
 }
 
 # https://nscsso.my.site.com/student/s/article/Why-am-I-getting-the-error-message-Failed-to-Load-PDF-document-when-I-try-to-view-my-ePDF-transcript#:~:text=The%20%E2%80%9CFailed%20to%20Load%20PDF,opened%20with%20Adobe%20Acrobat%20Reader.
@@ -173,8 +173,8 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
                 False,
                 "type of submission is not right please give "
                 + full_hack_data["submission_type"]
-                + "type submission",
-                "your submission is of the type" + type_of_submission,
+                + " type submission",
+                "your submission is of the type " + type_of_submission,
             )
 
         user_submissions.append(url_dict)
