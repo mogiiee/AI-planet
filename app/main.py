@@ -69,17 +69,17 @@ async def signup(signup_details: models.User):
 
 
 # protected routes of adding a new hack
-schema = {
-    "title": "hi hack",
-    "description": "string",
-    "email": "user@example.com",
-    "background_image": "string",
-    "hackathon_image": "string",
-    "submission_type": "link",
-    "start_datetime": "2023-05-13T05:25:18.995Z",
-    "end_datetime": "2023-05-13T05:25:18.995Z",
-    "reward_prize": 0,
-}
+# schema = {
+#     "title": "hi hack",
+#     "description": "string",
+#     "email": "user@example.com",
+#     "background_image": "string",
+#     "hackathon_image": "string",
+#     "submission_type": "link",
+#     "start_datetime": "2023-05-13T05:25:18.995Z",
+#     "end_datetime": "2023-05-13T05:25:18.995Z",
+#     "reward_prize": 0,
+# }
 
 
 @app.post(
@@ -125,7 +125,17 @@ async def add_hack(
         )
 
 
-#  { "hack_name": "hi hack",   "summary": "string",   "email": "q@q.com",   "type_of_submission": "file",   "hackathon_image": "string",   "submission_type": "link",   "start_datetime": "2023-05-13T05:25:18.995Z",   "end_datetime": "2023-05-13T05:25:18.995Z",   "reward_prize": 0 }
+schema = {
+    "hack_name": "hi hack",
+    "summary": "string",
+    "email": "q@q.com",
+    "type_of_submission": "file",
+    "hackathon_image": "string",
+    "submission_type": "link",
+    "start_datetime": "2023-05-13T05:25:18.995Z",
+    "end_datetime": "2023-05-13T05:25:18.995Z",
+    "reward_prize": 0,
+}
 
 # https://nscsso.my.site.com/student/s/article/Why-am-I-getting-the-error-message-Failed-to-Load-PDF-document-when-I-try-to-view-my-ePDF-transcript#:~:text=The%20%E2%80%9CFailed%20to%20Load%20PDF,opened%20with%20Adobe%20Acrobat%20Reader.
 
@@ -143,14 +153,12 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
     hack_name = text_dict["hack_name"]
     type_of_submission = text_dict["type_of_submission"]
     timern = datetime.now()
-    print(hack_name)
     if not ops.hack_verifier(hack_name):
 
         url = blob.public_url
         full_profile = await ops.full_user_data(email)
         user_submissions = full_profile["submissions"]
-        all_hacks = Get_all_hacks()
-        print(all_hacks)
+        
 
         url_dict = {
             "submission link": url,
@@ -159,6 +167,12 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
             "which_hack": hack_name,
             "type of submission": type_of_submission,
         }
+        
+        full_hack_data = ops.single_hack_data(hack_name)
+        if full_hack_data["submission_type"] != type_of_submission:
+            return responses.response(False, 
+            "type of submission is not right please give "+ full_hack_data['submission_type']+ "type submission",
+             "your submission is of the type" + type_of_submission)
 
         user_submissions.append(url_dict)
 
@@ -220,3 +234,4 @@ async def full_user_data(email):
     if not user:
         return responses.response(False, "does not exist", str(email))
     return str(user)
+
