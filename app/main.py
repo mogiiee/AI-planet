@@ -102,7 +102,7 @@ async def add_hack(
     blob_background_image = bucket.blob(background_image.filename)
     blob_background_image.upload_from_string(file_content2)
     blob_background_image.make_public()
-    if ops.hack_verifier(hack_name):
+    if ops.hack_verifier(hack_name): #checks if the input hack is valid or not
         if ops.email_finder(email):
             full_profile = await ops.full_user_data(email)
 
@@ -152,7 +152,7 @@ async def submission(file: UploadFile = File(...), text_field: str = Form(...)):
     hack_name = text_dict["hack_name"]
     type_of_submission = text_dict["type_of_submission"]
     timern = datetime.now()
-    if not ops.hack_verifier(hack_name):
+    if not ops.hack_verifier(hack_name):  #checks if the input hack is valid or not
 
         url = blob.public_url
         full_profile = await ops.full_user_data(email)
@@ -202,7 +202,7 @@ async def register_for_hack(registeration_deets: models.RegisterForHack):
     json_hack_deets = dict(infoDict)
     email = infoDict["email"]
     hack_name = infoDict["hack_name"]
-    if not ops.hack_verifier(hack_name):
+    if not ops.hack_verifier(hack_name):  #checks if the input hack is valid or not
         if ops.email_finder(email):
             full_profile = await ops.full_user_data(email)
             user_hacks_resgistered = full_profile["hacks_enlisted"]

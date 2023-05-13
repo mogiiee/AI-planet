@@ -2,6 +2,8 @@ from . import exporter
 import pymongo
 
 
+#stores all sorts of database information
+
 cluster = pymongo.MongoClient(exporter.realcluster)
 
 db = cluster[exporter.db_name]

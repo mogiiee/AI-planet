@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+#used to get data from dotenv safely and makes code clean
 
 realcluster = os.environ.get("CLUSTER")
 db_name = os.environ.get("DB")
